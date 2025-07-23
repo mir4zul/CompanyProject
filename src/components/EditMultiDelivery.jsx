@@ -1,123 +1,131 @@
-import React, {useState} from 'react';
-import {InputField} from "./ui/FromField.jsx";
-import {PlusCircleIcon, TrashIcon} from "@heroicons/react/16/solid/index.js";
+import { useState } from "react";
+import { InputField } from "./ui/FromField";
+import { PlusCircleIcon, TrashIcon, XMarkIcon} from "@heroicons/react/16/solid";
 
-export default function EditMultiDelivery({data, setOpenEdit}) {
-  const [formData, setFormData] = useState(
-      {
-        name: data.name,
-        phone: data.phone,
-        address: data.address,
-        route: data.route,
-      }
-  );
+export default function EditMultiDelivery({ delivery, onSave, onCancel, products }) {
+  const [formData, setFormData] = useState({
+    name: delivery.name || '',
+    address: delivery.address || '',
+    phone: delivery.phone || '',
+    route: delivery.route || ''
+  });
+  const [deliveryProducts, setDeliveryProducts] = useState(delivery.products || []);
 
-  console.log("formData", formData);
-
-  const [products, setProducts] = useState(data.products);
-
-  const Address = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+  const handleProductChange = (index, field, value) => {
+    const updatedProducts = [...deliveryProducts];
+    updatedProducts[index] = {
+      ...updatedProducts[index],
+      [field]: value
+    };
+    setDeliveryProducts(updatedProducts);
   };
 
-  const handleProductChange = (index, e) => {
-    const { name, value } = e.target;
-    const updated = [...products];
-    updated[index][name] = value;
-    setProducts(updated);
+  const handleAddProduct = () => {
+    setDeliveryProducts([...deliveryProducts, { ProductName: '', quantity: 0 }]);
   };
 
-  const addMoreProduct = () => {
-    setProducts([...products, { ProductName: '', ProductQuantity: '' }]);
+  const handleRemoveProduct = (index) => {
+    const updatedProducts = [...deliveryProducts];
+    updatedProducts.splice(index, 1);
+    setDeliveryProducts(updatedProducts);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onSave({
+      ...delivery,
+      ...formData,
+      products: deliveryProducts.filter(p => p.ProductName && p.quantity)
+    });
   };
 
   return (
-      <>
-        <div className="">
-              <div>
-                <div className="flex justify-end mb-4 text-sm">
-                  <button onClick={() => setOpenEdit(false)} className="text-red-600/60 cursor-pointer">Cancel</button>
-                </div>
-                {/* Subdealer Info */}
-                <form className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-                  <InputField
-                      name="phone"
-                      type="text"
-                      value={formData.phone}
-                      onChange={handleInputChange}
-                      placeholder="Subdealer Phone Number"
-                      required
-                  />
-
-                  <InputField
-                      name="name"
-                      type="text"
-                      value={formData.name}
-                      onChange={handleInputChange}
-                      placeholder="Subdealer Name"
-                      required
-                  />
-
-                  <select
-                      name="route"
-                      value={formData.route}
-                      onChange={handleInputChange}
-                      className="bg-transparent border w-full text-sm text-gray-700 dark:text-gray-100 dark:bg-secondary border-gray-200 dark:border-gray-600 focus:outline-none p-2 rounded"
-                  >
-                    <option value="default" disabled>
-                      Select Route
-                    </option>
-                    {Address.map((address) => (
-                        <option key={address} value={address}>
-                          {address}
-                        </option>
-                    ))}
-                  </select>
-
-                  <InputField
-                      name="address"
-                      type="text"
-                      value={formData.address}
-                      onChange={handleInputChange}
-                      placeholder="Subdealer Address"
-                      required
-                  />
-                </form>
-
-                {/* Product List */}
-                <div>
-                  {products.map((product, index) => (
-                      <form
-                          key={index}
-                          className="flex items-center space-x-2 mb-2"
-                      >
-                        <InputField
-                            name="ProductName"
-                            type="text"
-                            value={product.ProductName}
-                            onChange={(e) => handleProductChange(index, e)}
-                            placeholder="Product Name..."
-                            required
-                        />
-                        <InputField
-                            name="ProductQuantity"
-                            type="number"
-                            value={product.quantity}
-                            onChange={(e) => handleProductChange(index, e)}
-                            placeholder="Product Quantity..."
-                            required
-                        />
-                      </form>
-                  ))}
-                </div>
-              </div>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="grid grid-cols-2 gap-4">
+          <InputField
+              label="Name"
+              value={formData.name}
+              onChange={(e) => setFormData({...formData, name: e.target.value})}
+              required
+          />
+          <InputField
+              label="Phone"
+              value={formData.phone}
+              onChange={(e) => setFormData({...formData, phone: e.target.value})}
+          />
+          <InputField
+              label="Address"
+              value={formData.address}
+              onChange={(e) => setFormData({...formData, address: e.target.value})}
+              required
+          />
+          <InputField
+              label="Route"
+              value={formData.route}
+              onChange={(e) => setFormData({...formData, route: e.target.value})}
+          />
         </div>
-      </>
+
+        <div className="space-y-3">
+          <h4 className="text-sm font-medium">Products</h4>
+          {deliveryProducts.map((product, index) => (
+              <div key={index} className="flex gap-2 items-center">
+                <select
+                    value={product.ProductName}
+                    onChange={(e) => handleProductChange(index, 'ProductName', e.target.value)}
+                    className="flex-1 border rounded p-2 text-sm"
+                    required
+                >
+                  <option value="">Select Product</option>
+                  {products.map(p => (
+                      <option key={p.id} value={p.ProductName}>
+                        {p.ProductName}
+                      </option>
+                  ))}
+                </select>
+                <InputField
+                    type="number"
+                    value={product.quantity}
+                    onChange={(e) => handleProductChange(index, 'quantity', e.target.value)}
+                    placeholder="Qty"
+                    min="1"
+                    required
+                />
+                <button
+                    type="button"
+                    onClick={() => handleRemoveProduct(index)}
+                    className="text-red-500"
+                >
+                  <TrashIcon className="w-5 h-5"/>
+                </button>
+              </div>
+          ))}
+          <button
+              type="button"
+              onClick={handleAddProduct}
+              className="flex items-center text-sm text-blue-500"
+          >
+            <PlusCircleIcon
+                className="w-5 h-5 mr-1"/>
+            Add Product
+          </button>
+        </div>
+
+        <div className="flex justify-end gap-2">
+          <button
+              type="button"
+              onClick={onCancel}
+              className="px-4 py-2 border rounded"
+          >
+            Cancel
+          </button>
+          <button
+              type="submit"
+              className="px-4 py-2 bg-blue-500 text-white rounded"
+          >
+            Save
+          </button>
+        </div>
+      </form>
   );
-};
+}

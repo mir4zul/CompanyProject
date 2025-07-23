@@ -47,21 +47,21 @@ export const FramerModal = ({ isOpen, onClose, children }) => {
                   exit={{ y: -20, opacity: 0 }}
                   transition={{ type: 'spring', damping: 25, stiffness: 300 }}
               >
-                {/*/!* <button*/}
-                {/*            onClick={onClose}*/}
-                {/*            className="absolute top-4 right-4 rounded-full p-1 transition-colors hover:bg-gray-100 dark:hover:bg-gray-700"*/}
-                {/*            aria-label="Close"*/}
-                {/*        >*/}
-                {/*            <svg*/}
-                {/*                xmlns="http://www.w3.org/2000/svg"*/}
-                {/*                className="h-6 w-6 text-gray-500 dark:text-gray-400"*/}
-                {/*                fill="none"*/}
-                {/*                viewBox="0 0 24 24"*/}
-                {/*                stroke="currentColor"*/}
-                {/*            >*/}
-                {/*                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />*/}
-                {/*            </svg>*/}
-                {/*        </button> *!/*/}
+                <button
+                            onClick={onClose}
+                            className="absolute top-4 right-4 rounded-full p-1 transition-colors hover:bg-gray-100 dark:hover:bg-gray-700"
+                            aria-label="Close"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="h-6 w-6 text-gray-500 dark:text-gray-400"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                            >
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
 
                 <div className="max-h-[calc(100vh-8rem)] overflow-y-auto">{children}</div>
               </motion.div>

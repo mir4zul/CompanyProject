@@ -20,6 +20,7 @@ export default function AddProduct({data, products, setProducts}) {
     setRemainingQuantities(newRemaining);
   }, [data, products]);
 
+  // Handle form input changes
   const handleProductChange = (index, e) => {
     const {name, value} = e.target;
     const updatedProducts = [...products];
@@ -32,6 +33,7 @@ export default function AddProduct({data, products, setProducts}) {
     }
   };
 
+  // Handle product selection
   const handleSelectChange = (index, e) => {
     const selectedProductName = e.target.value;
     const selectedProduct = data.TotalSupply.find(p => p.ProductName === selectedProductName);
@@ -50,6 +52,7 @@ export default function AddProduct({data, products, setProducts}) {
     setErrors(newErrors);
   };
 
+  // Validate quantity
   const validateQuantity = (index, value) => {
     const product = products[index];
     const remaining = remainingQuantities[product.ProductName] || 0;
@@ -68,10 +71,12 @@ export default function AddProduct({data, products, setProducts}) {
     setErrors(newErrors);
   };
 
+  // Add more product
   const addMoreProduct = () => {
     setProducts([...products, {ProductName: '', productId: '', ProductQuantity: ''}]);
   };
 
+  // Remove product
   const removeProduct = (index) => {
     const updated = [...products];
     updated.splice(index, 1);
@@ -122,7 +127,6 @@ export default function AddProduct({data, products, setProducts}) {
                         );
                       })
                     }
-
                   </select>
 
                   <InputField
@@ -148,6 +152,7 @@ export default function AddProduct({data, products, setProducts}) {
                   </button>
                 </div>
 
+                {/* Error messages */}
                 {nameError && (
                     <p className="text-red-500 text-xs ml-1">{nameError}</p>
                 )}
@@ -156,6 +161,7 @@ export default function AddProduct({data, products, setProducts}) {
                     <p className="text-red-500 text-xs ml-1">{qtyError}</p>
                 )}
 
+                {/* Remaining quantity */}
                 {product.ProductName && !nameError && !qtyError && (
                     <p className={`text-xs ml-1 ${
                         Number(product.ProductQuantity) > remaining ? 'text-red-500' : 'text-green-500'
@@ -167,6 +173,7 @@ export default function AddProduct({data, products, setProducts}) {
           );
         })}
 
+        {/* Add more product button */}
         <button
             onClick={addMoreProduct}
             className={clsx(

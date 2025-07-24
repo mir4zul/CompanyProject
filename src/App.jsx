@@ -7,6 +7,7 @@ function App() {
   return (
     <>
       <div className="bg-secondary">
+        {/* Distribution Table */}
         <DistributionTable data={data} />
       </div>
 

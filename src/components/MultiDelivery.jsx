@@ -11,6 +11,7 @@ export default function MultiDelivery({ item, deliveries, setDeliveries, onAddSu
   const [isDropdownOpen, setIsDropdownOpen] = useState(null);
   const [expandedDeliveries, setExpandedDeliveries] = useState({});
 
+  // Function to handle adding a new sub-dealer
   const handleAddMultiDelivery = (newItem) => {
     const maxId = deliveries.length > 0 ? Math.max(...deliveries.map(d => d.id)) : 0;
     const newDelivery = {
@@ -24,6 +25,7 @@ export default function MultiDelivery({ item, deliveries, setDeliveries, onAddSu
     }
   };
 
+  // Function to handle editing a sub-dealer
   const handleEditDelivery = (index, updatedDelivery) => {
     const updatedDeliveries = [...deliveries];
     updatedDeliveries[index] = updatedDelivery;
@@ -31,11 +33,13 @@ export default function MultiDelivery({ item, deliveries, setDeliveries, onAddSu
     setEditingIndex(null);
   };
 
+  // Function to handle removing a sub-dealer
   const removeMultiDelivery = (index) => {
     setDeliveries(prev => prev.filter((_, i) => i !== index));
     setIsDropdownOpen(null);
   };
 
+  // Function to handle adding a new product
   const handleAddProductSave = (index, updatedProducts) => {
     const updatedDeliveries = [...deliveries];
     updatedDeliveries[index].products = updatedProducts;
@@ -43,6 +47,7 @@ export default function MultiDelivery({ item, deliveries, setDeliveries, onAddSu
     setAddProductIndex(null);
   };
 
+  // Function to toggle product expansion
   const toggleExpansion = (index) => {
     setExpandedDeliveries(prev => ({
       ...prev,
@@ -68,6 +73,9 @@ export default function MultiDelivery({ item, deliveries, setDeliveries, onAddSu
                           onSave={(updated) => handleEditDelivery(index, updated)}
                           onCancel={() => setEditingIndex(null)}
                           products={item.TotalSupply}
+                          item={item}
+                          subDeliveries={subDeliveries}
+                          availableProducts={item.TotalSupply}
                       />
                   ) : (
                       <>
@@ -136,6 +144,7 @@ export default function MultiDelivery({ item, deliveries, setDeliveries, onAddSu
                               </button>
                           )}
 
+                          {/* Add new product */}
                           {addProductIndex === index && (
                               <NewProduct
                                   products={delivery.products || []}
@@ -158,6 +167,7 @@ export default function MultiDelivery({ item, deliveries, setDeliveries, onAddSu
             );
           })}
 
+          {/* Add new delivery */}
           <AddMultiDelivery
               handleAddMultiDelivery={handleAddMultiDelivery}
               data={item}

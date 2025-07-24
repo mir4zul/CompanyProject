@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { PlusCircleIcon, TrashIcon } from "@heroicons/react/16/solid/index.js";
+import React, { useState } from 'react';
+import { PlusCircleIcon } from "@heroicons/react/16/solid/index.js";
 import { InputField } from "./ui/FromField.jsx";
 import AddProduct from "./AddProduct.jsx";
 
@@ -68,6 +68,7 @@ export default function AddMultiDelivery({ onUpdate, data, handleAddMultiDeliver
         }))
       };
 
+      // ____________________________________Your API call would go here_______________________________________________
       // Your API call would go here
       // await api.post('/deliveries', payload);
       console.log("Submitting:", payload);
@@ -75,7 +76,7 @@ export default function AddMultiDelivery({ onUpdate, data, handleAddMultiDeliver
 
       // Reset form on success
       setFormData({ name: '', phone: '', address: '', route: '' });
-      setProducts([{ ProductName: '', ProductQuantity: '' }]);
+      setProducts([{productId: '', ProductName: '', ProductQuantity: '' }]);
       setAddingNewDelivery(false);
       if (onUpdate) onUpdate();
     } catch (err) {

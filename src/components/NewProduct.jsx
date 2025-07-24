@@ -45,6 +45,7 @@ export default function NewProduct({ products, setProducts, onSave, onCancel, av
     }
   }, [products, availableProducts]);
 
+  // ✅ Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!newProduct.ProductName || !newProduct.quantity) return;
@@ -119,6 +120,7 @@ export default function NewProduct({ products, setProducts, onSave, onCancel, av
             />
           </div>
 
+          {/* ✅ Show remaining quantity and total supply */}
           {newProduct.ProductName && remainingQuantities[newProduct.ProductName] !== undefined && (
               <p className={`text-xs ${
                   Number(newProduct.quantity) > remainingQuantities[newProduct.ProductName]
@@ -131,6 +133,7 @@ export default function NewProduct({ products, setProducts, onSave, onCancel, av
               </p>
           )}
 
+          {/* ✅ Add and cancel buttons */}
           <div className="flex justify-end gap-2">
             <button
                 type="button"

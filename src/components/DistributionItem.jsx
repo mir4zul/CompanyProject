@@ -4,8 +4,7 @@ import MultiDelivery from "./MultiDelivery";
 export default function DistributionItem({ item }) {
   const [subDeliveries, setSubDeliveries] = useState(item.subDelars || []);
 
-  console.log("Subdeliveries:", subDeliveries);
-
+  // ✅ Calculate remaining quantities
   const calculateRemaining = (productName) => {
     const product = item.TotalSupply.find(p => p.ProductName === productName);
     if (!product) return 0;
@@ -18,6 +17,7 @@ export default function DistributionItem({ item }) {
     return Number(product.quantity) - allocated;
   };
 
+  // ✅ Add subdealer
   const handleAddSubDealer = (newSubDealer) => {
     const invalidProducts = newSubDealer.products.filter(product => {
       const remaining = calculateRemaining(product.ProductName);
@@ -33,6 +33,7 @@ export default function DistributionItem({ item }) {
     return true;
   };
 
+  // Temporary date for testing
   const date = new Date();
 
   return (
@@ -46,6 +47,7 @@ export default function DistributionItem({ item }) {
           <div className="space-y-3">
             <h2 className="text-xl pb-2 text-center font-medium dark:text-gray-200">Products</h2>
 
+            {/* Delivery Table */}
             <div className="grid grid-cols-2 gap-4">
               {item.TotalSupply.map((supply) => {
                 const allocated = subDeliveries.reduce((sum, subDelar) => {
@@ -74,6 +76,7 @@ export default function DistributionItem({ item }) {
             </div>
           </div>
 
+          {/* Multi Delivery */}
           <MultiDelivery
               item={item}
               deliveries={subDeliveries}

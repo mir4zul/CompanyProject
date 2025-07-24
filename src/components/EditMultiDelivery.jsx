@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { InputField } from "./ui/FromField";
-import { PlusCircleIcon, TrashIcon, XMarkIcon} from "@heroicons/react/16/solid";
+import { TrashIcon} from "@heroicons/react/16/solid";
 
 export default function EditMultiDelivery({ delivery, onSave, onCancel, products }) {
   const [formData, setFormData] = useState({
@@ -11,6 +11,7 @@ export default function EditMultiDelivery({ delivery, onSave, onCancel, products
   });
   const [deliveryProducts, setDeliveryProducts] = useState(delivery.products || []);
 
+  // Function to handle product changes
   const handleProductChange = (index, field, value) => {
     const updatedProducts = [...deliveryProducts];
     updatedProducts[index] = {
@@ -20,16 +21,14 @@ export default function EditMultiDelivery({ delivery, onSave, onCancel, products
     setDeliveryProducts(updatedProducts);
   };
 
-  const handleAddProduct = () => {
-    setDeliveryProducts([...deliveryProducts, { ProductName: '', quantity: 0 }]);
-  };
-
+  // Function handle remove product
   const handleRemoveProduct = (index) => {
     const updatedProducts = [...deliveryProducts];
     updatedProducts.splice(index, 1);
     setDeliveryProducts(updatedProducts);
   };
 
+  // Function to handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
     onSave({
@@ -66,6 +65,7 @@ export default function EditMultiDelivery({ delivery, onSave, onCancel, products
           />
         </div>
 
+        {/* Products section */}
         <div className="space-y-3">
           <h4 className="text-sm font-medium">Products</h4>
           {deliveryProducts.map((product, index) => (
@@ -73,7 +73,7 @@ export default function EditMultiDelivery({ delivery, onSave, onCancel, products
                 <select
                     value={product.ProductName}
                     onChange={(e) => handleProductChange(index, 'ProductName', e.target.value)}
-                    className="flex-1 border rounded p-2 text-sm"
+                    className="flex-1 border bg-secondary rounded p-2 text-sm"
                     required
                 >
                   <option value="">Select Product</option>
@@ -100,17 +100,9 @@ export default function EditMultiDelivery({ delivery, onSave, onCancel, products
                 </button>
               </div>
           ))}
-          <button
-              type="button"
-              onClick={handleAddProduct}
-              className="flex items-center text-sm text-blue-500"
-          >
-            <PlusCircleIcon
-                className="w-5 h-5 mr-1"/>
-            Add Product
-          </button>
         </div>
 
+        {/* Save and Cancel buttons */}
         <div className="flex justify-end gap-2">
           <button
               type="button"

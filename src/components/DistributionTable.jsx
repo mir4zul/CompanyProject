@@ -78,6 +78,7 @@ export default function DistributionTable({ data }) {
           </tbody>
         </table>
 
+        {/* Modal */}
         <FramerModal isOpen={isOpen} onClose={() => setIsOpen(false)}>
           <DistributionItem item={selectedItem} />
         </FramerModal>

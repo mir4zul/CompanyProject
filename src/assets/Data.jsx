@@ -115,13 +115,3 @@ export const data = [
     ],
   },
 ];
-
-// {availableProducts
-//     .filter(option =>
-//         !products.some(product => product.ProductName === option.ProductName)
-//     )
-//     .map(option => (
-//         <option key={option.ProductName} value={option.ProductName}>
-//           {option.ProductName} available)
-//         </option>
-//     ))}

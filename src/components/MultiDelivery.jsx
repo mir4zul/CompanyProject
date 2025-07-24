@@ -5,7 +5,7 @@ import { FramerDropdown } from "./ui/framerDropdown";
 import EditMultiDelivery from "./EditMultiDelivery";
 import NewProduct from "./NewProduct.jsx";
 
-export default function MultiDelivery({ item, deliveries, setDeliveries, onAddSubDealer }) {
+export default function MultiDelivery({ item, deliveries, setDeliveries, onAddSubDealer, subDeliveries }) {
   const [editingIndex, setEditingIndex] = useState(null);
   const [addProductIndex, setAddProductIndex] = useState(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(null);
@@ -147,6 +147,8 @@ export default function MultiDelivery({ item, deliveries, setDeliveries, onAddSu
                                   onSave={(updatedProducts) => handleAddProductSave(index, updatedProducts)}
                                   onCancel={() => setAddProductIndex(null)}
                                   availableProducts={item.TotalSupply}
+                                  item={item}
+                                  subDeliveries={subDeliveries}
                               />
                           )}
                         </div>

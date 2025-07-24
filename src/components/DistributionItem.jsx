@@ -79,6 +79,7 @@ export default function DistributionItem({ item }) {
               deliveries={subDeliveries}
               setDeliveries={setSubDeliveries}
               onAddSubDealer={handleAddSubDealer}
+              subDeliveries={subDeliveries}
           />
         </div>
       </div>

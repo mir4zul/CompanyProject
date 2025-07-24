@@ -19,7 +19,6 @@ export const data = [
         products: [
           { id: 1, productId: 201, ProductName: "Color bard", quantity: "100" },
           { id: 2, productId: 202, ProductName: "Cock bard", quantity: "600" },
-          { id: 3, productId: 203, ProductName: "Boiler", quantity: "1000" },
         ],
       },
       {
@@ -30,7 +29,6 @@ export const data = [
         products: [
           { id: 1, productId: 201, ProductName: "Color bard", quantity: "100" },
           { id: 2, productId: 202, ProductName: "Cock bard", quantity: "500" },
-          { id: 3, productId: 203, ProductName: "Boiler", quantity: "300" },
         ],
       },
       {
@@ -42,7 +40,6 @@ export const data = [
         products: [
           { id: 1, productId: 201, ProductName: "Color bard", quantity: "100" },
           { id: 2, productId: 202, ProductName: "Cock bard", quantity: "600" },
-          { id: 3, productId: 203, ProductName: "Boiler", quantity: "300" },
         ],
       },
     ],
@@ -118,3 +115,13 @@ export const data = [
     ],
   },
 ];
+
+// {availableProducts
+//     .filter(option =>
+//         !products.some(product => product.ProductName === option.ProductName)
+//     )
+//     .map(option => (
+//         <option key={option.ProductName} value={option.ProductName}>
+//           {option.ProductName} available)
+//         </option>
+//     ))}

@@ -2,65 +2,70 @@ import { useEffect, useState } from "react";
 import { InputField } from "./ui/FromField";
 import { CheckIcon, XMarkIcon } from "@heroicons/react/16/solid";
 
-export default function NewProduct({ products, setProducts, onSave, onCancel, availableProducts }) {
+export default function NewProduct({ products, setProducts, onSave, onCancel, availableProducts, item, subDeliveries }) {
   const [newProduct, setNewProduct] = useState({
     ProductName: '',
     quantity: ''
   });
   const [remainingQuantities, setRemainingQuantities] = useState({});
-  const [availableOptions, setAvailableOptions] = useState([]);
+  const [isCalculating, setIsCalculating] = useState(false);
 
-  // Calculate remaining quantities and available products
-  useEffect(() => {
-    if (!availableProducts?.TotalSupply) return;
-
-    const newRemaining = {};
-    const newAvailableOptions = [];
-
-    // Calculate allocated quantities from current products
-    const allocated = {};
-    products?.forEach(product => {
-      if (product.ProductName) {
-        allocated[product.ProductName] = (allocated[product.ProductName] || 0) + Number(product.quantity || 0);
-      }
-    });
-
-    // Calculate remaining quantities and available options
-    availableProducts.TotalSupply.forEach(supply => {
-      const totalAllocated = allocated[supply.ProductName] || 0;
-      const remaining = Number(supply.quantity) - totalAllocated;
-      newRemaining[supply.ProductName] = remaining;
-
-      // Include all products regardless of remaining quantity
-      newAvailableOptions.push({
-        ...supply,
-        remaining
-      });
-    });
-
-    setRemainingQuantities(newRemaining);
-    setAvailableOptions(newAvailableOptions);
-  }, [availableProducts, products]);
-
+  // ✅ Handle form input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setNewProduct(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    setNewProduct(prev => ({ ...prev, [name]: value }));
   };
+
+  // ✅ Calculate remaining quantities based on allocated products
+  useEffect(() => {
+    if (!availableProducts) return;
+
+    const calculateRemaining = () => {
+      const newRemaining = {};
+
+      availableProducts.forEach((supply) => {
+        const allocated = products
+            .filter(product => product.ProductName === supply.ProductName)
+            .reduce((sum, product) => sum + Number(product.quantity || 0), 0);
+
+        newRemaining[supply.ProductName] = Number(supply.quantity) - allocated;
+      });
+
+      return newRemaining;
+    };
+
+    setIsCalculating(true);
+    try {
+      const newRemaining = calculateRemaining();
+      setRemainingQuantities(newRemaining);
+    } catch (error) {
+      console.error("Error calculating remaining quantities:", error);
+    } finally {
+      setIsCalculating(false);
+    }
+  }, [products, availableProducts]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!newProduct.ProductName || !newProduct.quantity) return;
 
-    const updatedProducts = [...products, {
-      ...newProduct,
-      quantity: Number(newProduct.quantity),
-      id: Date.now()
-    }];
+    const quantityToAdd = Number(newProduct.quantity);
+    const productName = newProduct.ProductName;
 
+    const newProductItem = {
+      ...newProduct,
+      quantity: quantityToAdd,
+      id: Date.now()
+    };
+
+    // Optimistically update remaining quantities
+    const updatedRemaining = { ...remainingQuantities };
+    updatedRemaining[productName] = (updatedRemaining[productName] || 0) - quantityToAdd;
+    setRemainingQuantities(updatedRemaining);
+
+    const updatedProducts = [...products, newProductItem];
     setProducts(updatedProducts);
+    setNewProduct({ ProductName: '', quantity: '' });
     onSave(updatedProducts);
   };
 
@@ -77,15 +82,27 @@ export default function NewProduct({ products, setProducts, onSave, onCancel, av
                 required
             >
               <option value="">Select Product</option>
-              {availableOptions.map(product => (
-                  <option
-                      key={product.id}
-                      value={product.ProductName}
-                      disabled={product.remaining <= 0}
-                  >
-                    {product.ProductName} ({product.remaining} remaining)
-                  </option>
-              ))}
+              {availableProducts
+                  .filter(option => !products.some(product => product.ProductName === option.ProductName))
+                  .map(option => {
+                    // Find the total supply for this specific product
+                    const supply = item.TotalSupply.find(s => s.ProductName === option.ProductName);
+                    const total = supply ? Number(supply.quantity) : 0;
+
+                    // Sum all allocated quantities from subDeliveries for this product
+                    const allocated = subDeliveries.reduce((sum, subDelar) => {
+                      const matchedProduct = subDelar.products?.find(p => p.ProductName === option.ProductName);
+                      return sum + (matchedProduct ? Number(matchedProduct.quantity) : 0);
+                    }, 0);
+
+                    const remaining = total - allocated;
+
+                    return (
+                        <option key={option.ProductName} value={option.ProductName}>
+                          {option.ProductName} ({remaining} available)
+                        </option>
+                    );
+                  })}
             </select>
 
             <InputField
@@ -98,6 +115,7 @@ export default function NewProduct({ products, setProducts, onSave, onCancel, av
                 max={newProduct.ProductName ? remainingQuantities[newProduct.ProductName] : undefined}
                 className="w-24"
                 required
+                disabled={isCalculating}
             />
           </div>
 
@@ -107,7 +125,9 @@ export default function NewProduct({ products, setProducts, onSave, onCancel, av
                       ? 'text-red-500'
                       : 'text-green-500'
               }`}>
-                {remainingQuantities[newProduct.ProductName]} available
+                {remainingQuantities[newProduct.ProductName]} available (Total supply: {
+                availableProducts.find(p => p.ProductName === newProduct.ProductName)?.quantity
+              })
               </p>
           )}
 
@@ -116,17 +136,30 @@ export default function NewProduct({ products, setProducts, onSave, onCancel, av
                 type="button"
                 onClick={onCancel}
                 className="px-3 py-1 text-sm border rounded flex items-center gap-1"
+                disabled={isCalculating}
             >
-              <XMarkIcon className="w-4 h-4"/>
+              <XMarkIcon className="w-4 h-4" />
               Cancel
             </button>
             <button
                 type="submit"
                 className="px-3 py-1 text-sm bg-blue-500 text-white rounded flex items-center gap-1"
-                disabled={!newProduct.ProductName || !newProduct.quantity}
+                disabled={
+                    isCalculating ||
+                    !newProduct.ProductName ||
+                    !newProduct.quantity ||
+                    (remainingQuantities[newProduct.ProductName] !== undefined &&
+                        Number(newProduct.quantity) > remainingQuantities[newProduct.ProductName])
+                }
             >
-              <CheckIcon className="w-4 h-4"/>
-              Add
+              {isCalculating ? (
+                  'Calculating...'
+              ) : (
+                  <>
+                    <CheckIcon className="w-4 h-4" />
+                    Add
+                  </>
+              )}
             </button>
           </div>
         </form>

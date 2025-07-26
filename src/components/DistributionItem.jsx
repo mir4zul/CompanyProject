@@ -37,42 +37,51 @@ export default function DistributionItem({ item }) {
   const date = new Date();
 
   return (
-      <div className="max-w-5xl w-full mx-auto py-10 px-4">
-        <div className="p-4 space-y-6">
-          <div className="text-center border-b pb-4 border-gray-200 dark:border-gray-700">
-            <h1 className="text-2xl font-semibold dark:text-white">{item.dealerName}</h1>
+      <div className="max-w-5xl w-full mx-auto py-10">
+        <div className="space-y-6">
+          <div className="text-center pb-4">
+            <h1 className="text-xl md:text-2xl font-semibold dark:text-white">{item.dealerName}</h1>
             <p className="text-gray-500 dark:text-gray-400">{item.address}</p>
             <p className="text-gray-500 dark:text-gray-400">{date.toDateString()}</p>
           </div>
+
           <div className="space-y-3">
             <h2 className="text-xl pb-2 text-center font-medium dark:text-gray-200">Products</h2>
 
             {/* Delivery Table */}
-            <div className="grid grid-cols-2 gap-4">
-              {item.TotalSupply.map((supply) => {
-                const allocated = subDeliveries.reduce((sum, subDelar) => {
-                  const matchedProduct = subDelar.products?.find(p => p.ProductName === supply.ProductName);
-                  return sum + (matchedProduct ? Number(matchedProduct.quantity) : 0);
-                }, 0);
-                const remaining = Number(supply.quantity) - allocated;
+            <div className="overflow-x-auto">
+              <table className="min-w-full bg-white dark:bg-muted rounded-lg overflow-hidden shadow-sm">
+                <thead className="bg-gray-50 dark:bg-gray-700">
+                <tr>
+                  <th className="py-3 px-3 text-left text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-200 whitespace-nowrap">
+                    Product Name
+                  </th>
+                  <th className="py-3 px-3 text-left text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-200 whitespace-nowrap">
+                    Available
+                  </th>
+                  <th className="py-3 px-3 text-left text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-200 whitespace-nowrap">
+                    Supply
+                  </th>
+                </tr>
+                </thead>
+                <tbody className="bg-white dark:bg-muted">
+                  {item.TotalSupply.map((supply) => {
+                    const allocated = subDeliveries.reduce((sum, subDelar) => {
+                      const matchedProduct = subDelar.products?.find(p => p.ProductName === supply.ProductName);
+                      return sum + (matchedProduct ? Number(matchedProduct.quantity) : 0);
+                    }, 0);
+                    const remaining = Number(supply.quantity) - allocated;
 
-                return (
-                    <div key={supply.id} className="bg-gray-100 grid grid-cols-3 dark:bg-muted p-6 shadow-xl rounded-lg">
-                      <div className="flex flex-col gap-2">
-                        <p className="text-sm dark:text-gray-100">Product Name</p>
-                        <p className="text-sm dark:text-gray-400">{supply.ProductName}</p>
-                      </div>
-                      <div className="flex flex-col items-center gap-2">
-                        <p className="text-sm dark:text-gray-100">Available</p>
-                        <p className="text-sm text-left dark:text-green-400">{remaining}</p>
-                      </div>
-                      <div className="flex flex-col items-center gap-2">
-                        <p className="text-sm dark:text-gray-100">Total supply</p>
-                        <p className="text-sm text-left dark:text-amber-600">{supply.quantity}</p>
-                      </div>
-                    </div>
-                );
-              })}
+                    return (
+                        <tr key={supply.id} className="border-b border-gray-200 dark:border-gray-700">
+                          <td className="py-3 px-3 text-sm dark:text-gray-400">{supply.ProductName}</td>
+                          <td className="py-3 px-3 text-sm dark:text-green-400">{remaining}</td>
+                          <td className="py-3 px-3 text-sm dark:text-amber-600">{supply.quantity}</td>
+                        </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
             </div>
           </div>
 

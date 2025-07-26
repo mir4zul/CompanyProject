@@ -56,7 +56,7 @@ export default function MultiDelivery({ item, deliveries, setDeliveries, onAddSu
   };
 
   return (
-      <div className="space-y-4 border-t border-gray-200 dark:border-gray-700 pt-4">
+      <div className="space-y-4 pt-4">
         <h2 className="text-xl font-medium text-center dark:text-gray-200">Sub-dealers</h2>
 
         <div className="space-y-4">

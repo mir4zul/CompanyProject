@@ -80,7 +80,7 @@ export const FramerModal = ({
                   </svg>
                 </button>
 
-                <div className="max-h-[80vh] overflow-y-auto p-6">
+                <div className="max-h-[80vh] overflow-y-auto scrollbar-thin p-6">
                   {children}
                 </div>
               </motion.div>

@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { PlusCircleIcon } from "@heroicons/react/16/solid/index.js";
 import { InputField } from "./ui/FromField.jsx";
 import AddProduct from "./AddProduct.jsx";
 
 const Address = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
 
-export default function AddMultiDelivery({ onUpdate, data, handleAddMultiDelivery }) {
+export default function AddMultiDelivery({ data, handleAddMultiDelivery, newMulti }) {
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -78,7 +78,6 @@ export default function AddMultiDelivery({ onUpdate, data, handleAddMultiDeliver
       setFormData({ name: '', phone: '', address: '', route: '' });
       setProducts([{productId: '', ProductName: '', ProductQuantity: '' }]);
       setAddingNewDelivery(false);
-      if (onUpdate) onUpdate();
     } catch (err) {
       setError(err.response?.data?.message || "Failed to save delivery");
     } finally {
@@ -132,6 +131,7 @@ export default function AddMultiDelivery({ onUpdate, data, handleAddMultiDeliver
                   data={data}
                   products={products}
                   setProducts={setProducts}
+                  newMulti={newMulti}
               />
             </div>
         )}

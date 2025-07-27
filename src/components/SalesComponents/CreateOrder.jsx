@@ -76,8 +76,8 @@ export default function CreateOrder() {
 
           {/* Delivery Date */}
           <div className="flex flex-col">
-            <LabelField htmlFor="DaliveryDate">Delivery Date</LabelField>
-            <InputField id="DaliveryDate" name="DaliveryDate" className="w-full dark:bg-secondary"
+            <LabelField htmlFor="dueDate">Due Date</LabelField>
+            <InputField id="dueDate" name="dueDate" className="w-full dark:bg-secondary"
                         defaultValue="default" type="date"/>
           </div>
 

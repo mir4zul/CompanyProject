@@ -7,6 +7,9 @@ export default function AddProduct({data, products, setProducts}) {
   const [remainingQuantities, setRemainingQuantities] = useState({});
   const [errors, setErrors] = useState({});
 
+  console.log(data);
+  console.log(products);
+
   // Calculate remaining quantities
   useEffect(() => {
     const newRemaining = {};

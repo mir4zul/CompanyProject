@@ -11,7 +11,7 @@ export default function StockDetails() {
       <div className="bg-accent p-4 shadow rounded-md">
         <h1 className="text-lg font-bold mb-4 text-center">Stock Details</h1>
 
-        <div className="overflow-x-auto rounded">
+        <div className="overflow-x-auto h-[38.7rem] scrollbar-thin rounded">
           <table className="w-full table-auto">
             <thead>
             <tr className="bg-gray-200 dark:bg-gray-900/60"> {/* Header background */}

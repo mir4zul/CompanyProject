@@ -6,6 +6,7 @@ import BookingDetails from "./SalesComponents/BookingDetails.jsx";
 import Category from "./SalesComponents/Category.jsx";
 import StockDetails from "./SalesComponents/StockDetails.jsx";
 import ProductSales from "./SalesComponents/ProductSales.jsx";
+import SlideInModal from "./ui/SlideInModal.jsx";
 
 export default function SalesPage() {
   return (
@@ -43,6 +44,8 @@ export default function SalesPage() {
             <ProductSales/>
           </div>
         </div>
+
+        <SlideInModal/>
       </div>
   );
 };

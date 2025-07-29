@@ -75,14 +75,14 @@ export const AnimatedInputField = ({type, value, onChange, label, className, nam
             {...props}
             className={clsx("peer absolute top-0 left-0 w-full h-full px-2 py-4 text-sm text-gray-200 border " +
                 "border-gray-500 rounded outline-none bg-transparent z-[1] focus:border-[1.5px] " +
-                "focus:border-amber-700", className)}
+                "focus:border-green-500", className)}
             placeholder=" "
         />
         <label
             className={
           clsx("absolute left-2 top-4 px-1 text-sm text-[#80868b] bg-accent transition-all" +
               " duration-300 ease-in-out pointer-events-none peer-focus:top-[-0.5rem] peer-focus:left-[0.8rem]" +
-              " peer-focus:text-[0.75rem] peer-focus:text-amber-700 peer-focus:font-medium peer-focus:z-10" +
+              " peer-focus:text-[0.75rem] peer-focus:text-green-500 peer-focus:font-medium peer-focus:z-10" +
               " peer-placeholder-shown:top-1.5 peer-placeholder-shown:left-2 peer-placeholder-shown:text-sm" +
               "peer-not-placeholder-shown:top-[-0.5rem] peer-not-placeholder-shown:left-[0.8rem]" +
               "peer-not-placeholder-shown:text-[0.75rem] peer-not-placeholder-shown:font-medium" +

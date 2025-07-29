@@ -33,9 +33,9 @@ export default function SalesBooking() {
           </div>
 
           <div className="flex flex-col">
-           <LabelField htmlFor="salesPoint">Sales Point</LabelField>
+           <LabelField htmlFor="salesPoint">Sales Booking</LabelField>
             <SelectField defaultValue="default">
-              <OptionField disabled value="default">Select Seller</OptionField>
+              <OptionField disabled value="default">Select Booking</OptionField>
               {
                 SalesBookingData.map((salesPoint, index) => (
                     <OptionField
@@ -50,9 +50,9 @@ export default function SalesBooking() {
           </div>
 
           <div className="flex flex-col">
-            <LabelField htmlFor="salesPoint">Sales Point</LabelField>
+            <LabelField htmlFor="salesPoint">Sales Person</LabelField>
             <SelectField defaultValue="default">
-              <OptionField disabled value="default">Select Delar</OptionField>
+              <OptionField disabled value="default">Select Person</OptionField>
               {
                 SalesBookingData.map((salesPoint, index) => (
                     <OptionField

@@ -78,8 +78,19 @@ export default function ProductSales() {
           </table>
         </div>
 
-        <div className="mt-10">
+        <div className="mt-4 grid grid-cols-3 gap-4">
           <div className="col-span-2 flex flex-col gap-4">
+            <div className=" col-span-2 flex justify-between gap-4 mt-4">
+              <button
+                  className="bg-gray-500 dark:bg-secondary text-white border border-gray-400 dark:border-gray-600 py-2 px-4 rounded-md"
+                  onClick={() => setIsModelOpen(true)}
+              >
+                Add Multiple Delivery
+              </button>
+            </div>
+          </div>
+
+          <div className="col-span-1 border border-gray-500 rounded-md p-4 flex flex-col gap-4">
             <div className="relative h-5 mb-4">
               <AnimatedInputField label="Amount..." name="total" id="total" type="number"/>
             </div>
@@ -89,8 +100,15 @@ export default function ProductSales() {
             </div>
 
             <div>
-              <SelectField defaultValue="none" className="text-sm w-full dark:bg-accent text-gray-400 dark:border-gray-500" name="discountType" id="discountType">
-                <option className="text-gray-400" value="none" disabled>Discount Type</option>
+              <SelectField
+                  defaultValue="discount"
+                  className="text-sm w-full border dark:bg-accent text-gray-400 dark:border-gray-500
+              focus:ring-1 focus:ring-green-500 focus:border-green-500
+              focus:outline-none focus:text-gray-900 dark:focus:text-gray-200"
+                  name="discountType"
+                  id="discountType"
+              >
+                <option className="text-gray-400" value="discount" disabled>Discount Type</option>
                 <option value="0">0%</option>
                 <option value="5">5%</option>
                 <option value="10">10%</option>
@@ -113,16 +131,7 @@ export default function ProductSales() {
               <AnimatedInputField label="Total Amount..." name="totalAmount" id="totalAmount" type="number"/>
             </div>
 
-            <div className="flex justify-between gap-4 mt-4">
-              <button
-                  className="bg-gray-500 dark:bg-secondary text-white border border-gray-400 dark:border-gray-600 py-2 px-4 rounded-md"
-                  onClick={() => setIsModelOpen(true)}
-              >
-                Add Multiple Delivery
-              </button>
-
-              <button className="bg-green-500 dark:bg-green-600/50 text-white py-2 px-4 rounded-md">Check Out</button>
-            </div>
+            <button className="bg-green-500 dark:bg-green-600/50 text-white py-2 px-4 rounded-md">Check Out</button>
           </div>
         </div>
 

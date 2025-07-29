@@ -11,7 +11,7 @@ export default function CreateOrder() {
         <h1 className="text-2xl font-bold mb-4">Create Order</h1>
 
         <div className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Sales Delar Name*/}
             <div className="flex flex-col">
               <LabelField className="text-sm" htmlFor="salesPoint">Sales Delar</LabelField>
@@ -29,7 +29,14 @@ export default function CreateOrder() {
                 }
               </SelectField>
             </div>
+            <div className="">
+              <p className="text-sm mb-2">Delar Balance: </p>
+              <p className="bg-secondary text-green-500 p-2">2000 TK</p>
+            </div>
+          </div>
 
+          {/* ------- Sales Team & Payment Terms ------- */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Sales Team */}
             <div className="flex flex-col">
               <LabelField className="text-sm" htmlFor="salesPoint">Sales Types</LabelField>
@@ -67,83 +74,74 @@ export default function CreateOrder() {
             </div>
           </div>
 
-          {/* Invoice Date */}
-          <div className="flex flex-col">
-            <LabelField htmlFor="invoiceDate">Invoice Date</LabelField>
-            <InputField id="invoiceDate" name="invoiceDate" className="w-full dark:bg-secondary" defaultValue="default"
-                        type="date"/>
+          {/* ------- Invoice & Due Date ------- */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Invoice Date */}
+            <div className="flex flex-col">
+              <LabelField htmlFor="invoiceDate">Invoice Date</LabelField>
+              <InputField id="invoiceDate" name="invoiceDate" className="w-full dark:bg-secondary" defaultValue="default"
+                          type="date"/>
+            </div>
+
+            {/* Delivery Date */}
+            <div className="flex flex-col">
+              <LabelField htmlFor="dueDate">Due Date</LabelField>
+              <InputField id="dueDate" name="dueDate" className="w-full dark:bg-secondary"
+                          defaultValue="default" type="date"/>
+            </div>
           </div>
 
-          {/* Delivery Date */}
-          <div className="flex flex-col">
-            <LabelField htmlFor="dueDate">Due Date</LabelField>
-            <InputField id="dueDate" name="dueDate" className="w-full dark:bg-secondary"
-                        defaultValue="default" type="date"/>
+          {/* ------- Zone & Price Owner ------- */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Zone name */}
+            <div className="flex flex-col">
+              <LabelField htmlFor="zone">Zone Name</LabelField>
+              <SelectField id="zone" name="zone" className="w-full" defaultValue="default">
+                <OptionField disabled value="default">Select Zone</OptionField>
+                {
+                  delarData.map((delar, index) => (
+                      <OptionField
+                          key={index}
+                          value={index + 1}
+                      >
+                        {delar}
+                      </OptionField>
+                  ))
+                }
+              </SelectField>
+            </div>
+
+              {/* Price owner */}
+              <div className="flex items-end pb-2">
+                <input onChange={() => setOpenOwner(!openOwner)} type="checkbox"
+                       className="checkbox border border-gray-400"/>
+                <label className="label">
+                  {/* Price owner */}
+                  {
+                    openOwner ? (
+                        <select
+                            className="focus:outline-none ml-2 pb-1 w-full rounded"
+                            defaultValue="default"
+                        >
+                        <OptionField disabled value="default">Select Owner</OptionField>
+                          {
+                            delarData.map((delar, index) => (
+                                <OptionField
+                                    key={index}
+                                    value={index + 1}
+                                >
+                                  {delar}
+                                </OptionField>
+                            ))
+                          }
+                        </select>
+                    ) : (
+                        <span className="label-text ml-2">Authorized</span>
+                    )
+                  }
+                </label>
+              </div>
           </div>
-
-         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-           {/* Zone name */}
-           <div className="flex flex-col">
-             <LabelField htmlFor="zone">Zone Name</LabelField>
-             <SelectField id="zone" name="zone" className="w-full" defaultValue="default">
-               <OptionField disabled value="default">Select Zone</OptionField>
-               {
-                 delarData.map((delar, index) => (
-                     <OptionField
-                         key={index}
-                         value={index + 1}
-                     >
-                       {delar}
-                     </OptionField>
-                 ))
-               }
-             </SelectField>
-           </div>
-
-           <div className="flex flex-row justify-between">
-             {/* Price owner */}
-
-                   <div className="flex items-end pb-2">
-                     <input onChange={() => setOpenOwner(!openOwner)} type="checkbox" className="checkbox border border-gray-400" />
-                     <label className="label">
-                       {/* Price owner */}
-                       {
-                         openOwner ? (
-                            <select
-                                className="focus:outline-none ml-2 pb-1 w-full rounded"
-                                defaultValue="default"
-                            >
-                              <OptionField disabled value="default">Select Delar</OptionField>
-                              {
-                                delarData.map((delar, index) => (
-                                    <OptionField
-                                        key={index}
-                                        value={index + 1}
-                                    >
-                                      {delar}
-                                    </OptionField>
-                                ))
-                              }
-                            </select>
-                         ) : (
-                             <span className="label-text ml-2">Price Owner</span>
-                         )
-                       }
-                     </label>
-                   </div>
-
-          {/*  Authorized */}
-             <div className="flex items-end pb-2">
-               <label className="label">
-                 <input type="checkbox" className="checkbox border border-gray-400" />
-                 <span className="label-text ml-2">Authorized</span>
-               </label>
-             </div>
-           </div>
-         </div>
-
-          {/* Price oner */}
-
         </div>
       </div>
   );

@@ -2,7 +2,6 @@ import React from 'react';
 import {ProductSalesData} from "../../assets/Data.jsx";
 import {EyeIcon} from "@heroicons/react/16/solid";
 import {AnimatedInputField, SelectField} from "../ui/FromField.jsx";
-import AddNewMulti from "./AddNewMulti.jsx";
 import DistributionItem from "../DistributionItem.jsx";
 import {FramerModal} from "../../utils/framerModel.jsx";
 
@@ -26,7 +25,7 @@ export default function ProductSales() {
   const [isModelOpen, setIsModelOpen] = React.useState(false);
 
   return (
-      <div className="bg-accent p-4 shadow rounded-md">
+       <div className="bg-accent relative p-4 shadow rounded-md">
         <h1 className="text-lg font-bold mb-4 text-center">Add Product to Sales</h1>
 
         <div className="max-h-52 overflow-y-auto scrollbar-thin">

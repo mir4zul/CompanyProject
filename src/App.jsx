@@ -9,10 +9,10 @@ function App() {
     <>
       <div className="bg-secondary">
         {/* Distribution Table */}
-        {/*<DistributionTable data={data} />*/}
+        <DistributionTable data={data} />
 
       {/*  Sales Page */}
-        <SalesPage />
+      {/*  <SalesPage />*/}
       </div>
 
       <ThemeToggle />
